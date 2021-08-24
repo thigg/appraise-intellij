@@ -35,7 +35,7 @@ public class AddReviewCommentAction extends AnAction implements DumbAware {
         final Project project = e.getData(PlatformDataKeys.PROJECT);
         String filepath = getReviewedFilePath(e, project);
 
-        LOGGER.error("Comment @ " + filepath + ":" + lineNumberOffsetZero);
+        LOGGER.info("Comment @ " + filepath + ":" + lineNumberOffsetZero);
         showReviewCommentBalloon(e, lineNumberOffsetZero, project, filepath);
     }
 
@@ -46,7 +46,7 @@ public class AddReviewCommentAction extends AnAction implements DumbAware {
     private String getReviewedFilePath(final @NotNull AnActionEvent e, final Project project) {
         String filepath = e.getData(PlatformDataKeys.VIRTUAL_FILE).getPath();
         try {
-            filepath = new URI(project.getBasePath()).relativize(new URI(filepath)).getPath();
+            filepath = "./"+new URI(project.getBasePath()).relativize(new URI(filepath)).getPath();
         } catch (URISyntaxException ex) {
             ex.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class AddReviewCommentAction extends AnAction implements DumbAware {
 
         final JBPopup balloon =
                 JBPopupFactory.getInstance().createComponentPopupBuilder(commentForm, commentForm)
-                        .setAdText("Hit Ctrl+Enter to save comment.")
+                        .setAdText("Hit Ctrl+Enter or Alt+Enter to save comment.")
                         .setTitle("Comment Title")
                         .setResizable(true)
                         .setMovable(true)

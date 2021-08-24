@@ -20,7 +20,7 @@
         <action id="appriase.createComment" class="org.appraise.AddReviewCommentAction" text="Create Review Comment"
                 description="Create a Comment for Review" icon="/images/comment_add.png">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt E"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt E"/>
         </action>
-
     </actions>
 </idea-plugin>

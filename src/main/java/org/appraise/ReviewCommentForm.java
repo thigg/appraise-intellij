@@ -77,10 +77,13 @@ public class ReviewCommentForm extends JPanel {
 
         myReviewTextField.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).
                 put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK), "postComment");
+        myReviewTextField.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).
+                put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.ALT_DOWN_MASK), "postComment");
+        //todo mmake configurable
+
         myReviewTextField.getActionMap().put("postComment", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOGGER.error("actionmap action");
                 myBalloon.dispose();
                 postComment();
             }
@@ -90,18 +93,16 @@ public class ReviewCommentForm extends JPanel {
 
     @Nullable
     public void postComment() {
-        LOGGER.error(
-                "jo, message: " + myReviewTextField.getText() + " for " + _commentFilePath + ":" + _commentLineNumberOffsetZero);
         try {
             final String[] cmd = {
                     "git", "appraise", "comment",
                     "-m", myReviewTextField.getText(),
                     "-f", _commentFilePath,
                     "-l", "" + _commentLineNumberOffsetZero};
-            LOGGER.error("cmd: " + Arrays.toString(cmd) + " in " + _workspacePath);
+            LOGGER.info("cmd: " + Arrays.toString(cmd) + " in " + _workspacePath);
             final Process exec = Runtime.getRuntime().exec(cmd, null, new File(_workspacePath));
             exec.waitFor();
-            LOGGER.error("appraise output" + new BufferedReader(
+            LOGGER.info("appraise output" + new BufferedReader(
                     new InputStreamReader(exec.getInputStream())).lines().collect(
                     Collectors.joining()));
         } catch (IOException | InterruptedException e) {
