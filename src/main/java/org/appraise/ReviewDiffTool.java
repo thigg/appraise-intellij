@@ -32,13 +32,11 @@ public class ReviewDiffTool implements FrameDiffTool, SuppressiveDiffTool {
 
     @Override
     public @NotNull DiffViewer createComponent(@NotNull final DiffContext context, @NotNull final DiffRequest request) {
-        LOGGER.info("yeah,creating diff tool");
         return new ReviewDiffViewer(context, request);
     }
 
     @Override
     public List<Class<? extends DiffTool>> getSuppressedTools() {
-
         return Collections.<Class<? extends DiffTool>>singletonList(SimpleDiffTool.class);
     }
 }

@@ -11,13 +11,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -34,7 +28,6 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.SoftWrapsEditorCustomization;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class ReviewCommentForm extends JPanel {
 
@@ -42,16 +35,16 @@ public class ReviewCommentForm extends JPanel {
     private static final int ourBalloonWidth = 350;
     private static final int ourBalloonHeight = 200;
 
-    private final EditorTextField myReviewTextField;
+    public final EditorTextField myReviewTextField;
 
-    private JBPopup myBalloon;
+    public JBPopup myBalloon;
 
     private Editor myEditor;
     @NotNull
-    private final Project myProject;
-    private final String _commentFilePath;
-    private final int _commentLineNumberOffsetZero;
-    private final String _workspacePath;
+    public final Project myProject;
+    public final String _commentFilePath;
+    public final int _commentLineNumberOffsetZero;
+    public final String _workspacePath;
 
 
     public ReviewCommentForm(@NotNull Project project, final String commentFilePath,
@@ -85,29 +78,10 @@ public class ReviewCommentForm extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 myBalloon.dispose();
-                postComment();
+                GitAppraiseUtil.postComment(_commentFilePath, _commentLineNumberOffsetZero, _workspacePath, myReviewTextField);
             }
         });
         myReviewTextField.setEnabled(true);
-    }
-
-    @Nullable
-    public void postComment() {
-        try {
-            final String[] cmd = {
-                    "git", "appraise", "comment",
-                    "-m", myReviewTextField.getText(),
-                    "-f", _commentFilePath,
-                    "-l", "" + _commentLineNumberOffsetZero};
-            LOGGER.info("cmd: " + Arrays.toString(cmd) + " in " + _workspacePath);
-            final Process exec = Runtime.getRuntime().exec(cmd, null, new File(_workspacePath));
-            exec.waitFor();
-            LOGGER.info("appraise output" + new BufferedReader(
-                    new InputStreamReader(exec.getInputStream())).lines().collect(
-                    Collectors.joining()));
-        } catch (IOException | InterruptedException e) {
-            LOGGER.error(e);
-        }
     }
 
     @Override
