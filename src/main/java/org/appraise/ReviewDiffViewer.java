@@ -39,7 +39,8 @@ class ReviewDiffViewer extends SimpleDiffViewer {
         DefaultActionGroup group = new DefaultActionGroup(addCommentAction);
 
         final List<ReviewComment> reviewComments =
-                new ReviewCommentGetterService().get(filename, getProject().getBasePath());
+                new ReviewCommentGetterService().get(filename.replace("./",""),
+                        getProject().getBasePath());
 
         getEditor2().getGutter().registerTextAnnotation(
                 new TextAnnotationGutterProvider() {

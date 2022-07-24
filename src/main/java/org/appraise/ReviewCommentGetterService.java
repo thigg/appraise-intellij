@@ -1,5 +1,7 @@
 package org.appraise;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +14,9 @@ public class ReviewCommentGetterService {
 
     public List<ReviewComment> get(String filename, String workspacepath) {
         return GitAppraiseUtil.getComments(workspacepath)
-                .filter(m -> m.getFilename().equals(filename))
+                .filter(m -> {
+                    return m.getFilename().equals(filename);
+                })
                 .collect(Collectors.toList());
 
     }
