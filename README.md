@@ -1,8 +1,9 @@
 # appraise intellij
+<!-- Plugin description -->
 This is a draft of an intellij plugin to use [git-appraise](https://github.com/google/git-appraise) with intellij.
 
 _This is a very early draft_. Feel free to contribute, or take this code or just the idea, build your own and let me know.
-
+<!-- Plugin description end -->
 ## What is git-appraise?
 git appraise is a federated protocol for creating pull requests.
 
